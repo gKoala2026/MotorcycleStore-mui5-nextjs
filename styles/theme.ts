@@ -24,7 +24,7 @@ const theme = createTheme({
             secondary: '#D3AF37'
         },
         background:{
-            default:'#FDFCFC',
+            default:'#252C33',
             paper:'#D3AF37',
         },
         action:{

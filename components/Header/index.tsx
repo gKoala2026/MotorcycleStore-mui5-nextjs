@@ -1,11 +1,14 @@
 
-import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Button, Menu, MenuItem, MenuProps, Stack, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+// import { styled, alpha } from '@mui/material/styles';
+import { AppBar, Button, Menu, MenuItem, MenuProps, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import type { NextPage } from 'next'
 import React, { cloneElement, useState } from 'react';
 
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import style from './index.module.scss'
 
 interface Props {
     window?: () => Window;
@@ -23,6 +26,7 @@ function ElevationScroll (props : Props) {
     if (trigger==true) {
       const clone = cloneElement(children, {
         elevation: 4,
+        // 'color':'transparent',
       });
       return clone
     }
@@ -36,7 +40,7 @@ function ElevationScroll (props : Props) {
 
 const navItems = [ 
     'Home',
-    ['Motorcycles'], 
+    ['Motorcycles'],
     'Our Blog',
     'Contact Us'
 ]
@@ -47,6 +51,39 @@ const dropdownMenu:any ={
 
 const Header:NextPage = () => {
 
+    const MenuBar = styled(Stack)(({theme}) => ({
+        [theme.breakpoints.up('xs')]: {
+            display:'none',
+        },
+        [theme.breakpoints.up('md')]: {
+            display:'contents',
+        },
+        '> div': {
+            height:'87px',
+            padding:'0 25px 0 25px',
+            border:'0px',
+            alignItems:'center',
+            justifyContent:'center',
+            display:'flex',
+            backgroundColor:'inherit',
+            '&:hover': {
+                backgroundColor: '#D3AF37',
+                color: '#252C33'
+              },
+            cursor:'pointer',
+        },
+    }));
+    const ButtonBox = styled(Box)(({theme}) => ({
+        borderRadius:'10px', 
+        backgroundColor:theme.palette.background.paper, 
+        color:theme.palette.primary.main,  
+        justifyContent:'center', 
+        display:'flex', 
+        alignItems:'center',
+        cursor:'pointer',
+    }))
+    
+
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorElNav(event.currentTarget);
@@ -56,7 +93,7 @@ const Header:NextPage = () => {
     };
 
     
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -65,104 +102,84 @@ const Header:NextPage = () => {
         setAnchorEl(null);
     };
 
-    const StyledMenu = styled((props: MenuProps) => (
-        <Menu
-            elevation={0}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            {...props}
-            />
-        ))(({ theme }) => ({
-            '& .MuiPaper-root': {
-            borderRadius: 6,
-            marginTop: '16px',
-            minWidth: 180,
-            color:'rgb(55, 65, 81)',
-            boxShadow:
-                'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-            '& .MuiMenu-list': {
-                padding: '4px 0',
-            },
-            '& .MuiMenuItem-root': {
-                '& .MuiSvgIcon-root': {
-                fontSize: 18,
-                color: 'text.secondary',
-                marginRight: '24px',
-                },
-                '&:active': {
-                backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    theme.palette.action.selectedOpacity,
-                ),
-                },
-            },
-            },
-        }));
-
     return (
         <ElevationScroll>
-            <AppBar sx={{ py:'0px' }}>
-                <Container>
+            <AppBar >
+                <Container maxWidth='xl'>
                 <Toolbar>
-                    <Typography
-                        variant="h6"
-                        fontSize='26px'
-                        sx={{ flexGrow: 1 }}
-                    >
-                        <b>two wheelers</b>
-                    </Typography>
-                    <Stack display= {{ xs: 'none', sm: 'contents' }} direction='row'>
+                    <Stack sx={{ flexGrow: 1 }} py='25px'>
+                        <Typography width='172px'
+                            variant="h6"
+                            fontSize='26px'
+                        >
+                            <b>two wheelers</b>
+                        </Typography>
+                    </Stack>
+                    <MenuBar direction='row'>
                     {navItems.map((item, index) => {
                         if(typeof(item)=='string') return (
-                            <Box component='a' href='/' key={index} sx={{ color: 'inherit', textDecoration: 'none', }}>
-                                <Typography fontSize='20px' lineHeight='24.2px' padding='25px'>
-                                    {item}
-                                </Typography>
-                            </Box>
-                            )
-                        else return (
-                            <>
-                            <Box component='a' key={index} href='/'
-                            id="demo-customized-button"
-                            aria-controls={open ? 'demo-customized-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={handleClick}
+                            <Stack 
+                            key={index} 
                             sx={{ color: 'inherit', textDecoration: 'none', }}
                             >
-                                <Typography fontSize='20px' lineHeight='24.2px' padding='25px'>
-                                {item[0]}
+                                <Typography fontSize='20px' lineHeight='24.2px'>
+                                    {item}
                                 </Typography>
-                            </Box>
-                            
-                            <StyledMenu
-                            id="demo-customized-menu"
-                            MenuListProps={{
-                                'aria-labelledby': 'demo-customized-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            >
-                                {
-                                    dropdownMenu[item[0]].map((i:string, indexM:number) => (
-                                        <MenuItem key={indexM} onClick={handleClose} disableRipple>
-                                        {i}
-                                        </MenuItem>
-                                    ))
-                                }
-                            </StyledMenu>
-                            </>
+                            </Stack>
+                            )
+                        else return (
+                            <PopupState variant="popover" popupId="demo-popup-menu" key={index}>
+                                {(popupState) => (
+                                <>
+                                    {/* <Box {...bindTrigger(popupState)} > */}
+                                        <Stack {...bindTrigger(popupState)} direction='row' alignItems='center'>
+                                            <Typography fontSize='20px' lineHeight='24.2px'>
+                                            {item[0]}
+                                            </Typography>
+                                            <KeyboardArrowDownIcon fontSize='large'/>
+                                        </Stack>
+                                    {/* </Box> */}
+                                    <Menu {...bindMenu(popupState)}
+                                    anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                    }}
+                                    sx={{  
+                                        '& .MuiPaper-root': {
+                                        minWidth: 180,
+                                        color:'#D3AF37',
+                                        background:'#252C33'
+                                        },
+                                    }}
+                                    >
+                                        {
+                                            dropdownMenu[item[0]].map((i:string, indexM:number) => (
+                                                <MenuItem key={indexM} onClick={popupState.close}>
+                                                {i}
+                                                </MenuItem>
+                                            ))
+                                        }
+                                    </Menu>
+                                    </>
+                                )}
+                            </PopupState>
+
                             )
                         }
                     )}
-                    </Stack>
+                    </MenuBar>
+                    <ButtonBox width='144px' height='43px'>
+                        <Typography
+                            variant="h6"
+                            fontSize='20px'
+                        >
+                            <b>Login</b>
+                        </Typography>
+                    </ButtonBox>
                   
                   {/* mobile menu */}
 
