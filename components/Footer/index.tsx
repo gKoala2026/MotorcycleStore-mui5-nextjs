@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 
 const Footer:NextPage = () => {
     return(
-        <Paper elevation={0}>
+        <Box height='485px' sx={{backgroundColor:'primary.main'}}>
             <Container>
                 <Stack>
                     <Stack direction='row'>
@@ -14,7 +14,7 @@ const Footer:NextPage = () => {
                     </Stack>
                 </Stack>
             </Container>
-        </Paper>
+        </Box>
     )
 }
 
