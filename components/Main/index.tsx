@@ -49,7 +49,7 @@ const Main:NextPage = () => {
                             </Typography>
                         </Stack>                              
                     </SlideBox>
-                    <SlideBox sx={{background:"linear-gradient(90deg, #252C33 0%, rgba(37, 44, 51, 0) 50%), url('slide-2.png')", backgroundSize:'100% 100%'}} color='text.secondary'>
+                    <SlideBox sx={{background:"linear-gradient(90deg, #252C33 0%, rgba(37, 44, 51, 0) 50%), url('slide-2.png')", backgroundSize:'100% 100%'}} color='primary.light'>
                         <Stack height="548px" textAlign='left' minWidth='500px' maxWidth='700px'direction="column" justifyContent="center"  spacing={5} ml="77px">
                             <Typography fontSize='55px'>
                                 <b>2022 Catalogue is available, check what’s new in our store</b>
@@ -61,13 +61,13 @@ const Main:NextPage = () => {
                             </Stack>
                         </Stack>
                     </SlideBox>
-                    <SlideBox sx={{background:"linear-gradient(90deg, #252C33 0%, rgba(37, 44, 51, 0) 50%), url('slide-3.png')", backgroundSize:'110% 100%'}} color='text.secondary'>
+                    <SlideBox sx={{background:"linear-gradient(90deg, #252C33 0%, rgba(37, 44, 51, 0) 50%), url('slide-3.png')", backgroundSize:'110% 100%'}} color='primary.light'>
                         <Stack height="548px" textAlign='left' minWidth='500px' maxWidth='700px'direction="column" justifyContent="center"  spacing={5} ml="77px">
                             <Typography fontSize='55px'>
                                 <b>Riding in winter time? Here’s a guide on safety riding during winter season</b>
                             </Typography>
                             <Stack alignItems='center' justifyContent='center' alignSelf='center'>
-                                <Typography fontSize='25px' border='1px solid #FCF7D7' borderRadius='15px' px='30px' py='15px' sx={{cursor:"pointer"}}>
+                                <Typography fontSize='25px'  border='1px solid #FCF7D7' borderRadius='15px' px='30px' py='15px' sx={{cursor:"pointer"}}>
                                     <b>Learn More</b>
                                 </Typography>
                             </Stack>

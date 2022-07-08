@@ -1,20 +1,33 @@
+import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 
 // import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Button, Menu, MenuItem, MenuProps, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
-import { Box, Container } from '@mui/system';
-import type { NextPage } from 'next'
+import { AppBar, Box, Container, Menu, MenuItem, MenuProps, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
 import React, { cloneElement, useState } from 'react';
 
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-// import style from './index.module.scss'
+
+import { useUserContext } from '../useUserContext'
+import { UserContextType, } from '../../context/userContext'
+
+
+
+const navItems = [ 
+    'Home',
+    ['Motorcycles'],
+    'Our Blog',
+    'Contact Us'
+]
+const dropdownMenu:any ={
+    'Motorcycles': [ 'Showroom', 'Services', 'Parts', 'Test Drive' ],
+}
 
 interface Props {
     window?: () => Window;
     children: React.ReactElement;
 }
-
 function ElevationScroll (props : Props) {
     const { children, window } = props;
     const trigger = useScrollTrigger({
@@ -38,19 +51,9 @@ function ElevationScroll (props : Props) {
     }
 }
 
-const navItems = [ 
-    'Home',
-    ['Motorcycles'],
-    'Our Blog',
-    'Contact Us'
-]
-
-const dropdownMenu:any ={
-    'Motorcycles': [ 'Showroom', 'Services', 'Parts', 'Test Drive' ],
-}
-
 const Header:NextPage = () => {
 
+    // style
     const MenuBar = styled(Stack)(({theme}) => ({
         [theme.breakpoints.up('xs')]: {
             display:'none',
@@ -74,25 +77,22 @@ const Header:NextPage = () => {
         },
     }));
     const ButtonBox = styled(Box)(({theme}) => ({
+        marginLeft:'50px',
         borderRadius:'10px', 
         backgroundColor:theme.palette.background.paper, 
         color:theme.palette.primary.main,  
         justifyContent:'center', 
         display:'flex', 
         alignItems:'center',
+        align:'left',
         cursor:'pointer',
     }))
+    // userContext
+    const {  user, saveUser, cleanUser } = useUserContext() as UserContextType
+
     
-
-    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorElNav(event.currentTarget);
-    };
-    const handleCloseNavMenu = () => {
-      setAnchorElNav(null);
-    };
-
-
+    const router = useRouter()
+    
     return (
         <ElevationScroll>
             <AppBar >
@@ -163,15 +163,21 @@ const Header:NextPage = () => {
                         }
                     )}
                     </MenuBar>
-                    <ButtonBox width='144px' height='43px'>
-                        <Typography
-                            variant="h6"
-                            fontSize='20px'
-                        >
-                            <b>Login</b>
-                        </Typography>
-                    </ButtonBox>
-                  
+                    { user.status == false &&
+                        <ButtonBox width='144px' height='43px' onClick={() => router.push('/Login')}>
+                            <Typography
+                                variant="h6"
+                                fontSize='20px'
+                            >
+                                <b>Login</b>
+                            </Typography>
+                        </ButtonBox> 
+                        ||
+                        <Stack width='144px' height='43px' direction='row' alignItems='center' justifyContent="center" ml="50px" sx={{cursor:'pointer'}} onClick={() => cleanUser()}>
+                            <img src='Ellipse2.png' />
+                            <Typography fontSize='24px'>{user.name}</Typography>
+                        </Stack>
+                    }
                   {/* mobile menu */}
 
   

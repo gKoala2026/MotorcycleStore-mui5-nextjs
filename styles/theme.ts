@@ -13,15 +13,18 @@ const theme = createTheme({
         primary: {
             main: '#252C33',
             dark: '#F6F6F6',
-            light: '#D3AF37',
+            light: '#FCF7D7',
             contrastText: '#D3AF37',
         },
         secondary:{
-            main:'#F6F6F6',
+            main: '#252C33',
+            dark: '#252C33',
+            light: '#252C33',
+            contrastText: '#252C33',
         },
         text:{
             primary: '#D3AF37',
-            secondary: '#FCF7D7'
+            secondary: '#252C33'
         },
         background:{
             default:'#252C33',
