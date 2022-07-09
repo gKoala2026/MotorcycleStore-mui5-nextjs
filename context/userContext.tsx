@@ -1,6 +1,8 @@
 import * as React from 'react';
 import type { NextPage } from 'next'
 // import { TodoContextType, ITodo } from '../@types/todo';
+import {useContext} from 'react'
+import { isNumberObject } from 'util/types';
 
 export interface IUser {
     id: number;
@@ -15,6 +17,10 @@ export type UserContextType = {
 };
 
 export const UserContext = React.createContext<UserContextType | null>(null);
+
+export const useUserContext = () => {
+  return useContext(UserContext)
+}
 
 type UserProviderProps = {
     children : React.ReactNode,
@@ -48,6 +54,9 @@ const UserProvider:NextPage<UserProviderProps> = ({ children }) => {
         status: false,
         }
       )
+      // React.useEffect(() => {
+        localStorage.removeItem('id')
+      // }, [])
     }
     return (
         <UserContext.Provider value={{ user, saveUser, cleanUser }}>

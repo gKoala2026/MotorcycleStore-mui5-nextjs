@@ -2,8 +2,9 @@ import { Box, Container, Input, Paper, Stack, TextField, Typography, Link, FormC
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { useUserContext } from '../useUserContext'
-import { UserContextType, IUser } from '../../context/userContext'
+import { UserContextType, IUser, useUserContext } from '../../context/userContext'
+import React, { cloneElement, useState, useEffect, useRef } from 'react';
+import { NULL } from 'sass'
 
 
 const ariaLabel = { 'aria-label': 'description' };
@@ -15,10 +16,11 @@ const Login:NextPage = () => {
     // userContext
     const {  user, saveUser, cleanUser } = useUserContext() as UserContextType
 
-    const setLogin = (e:any) => {
-        console.log('eee', e)
-        const input = document.getElementById('email') as HTMLInputElement;
-        console.log('qwe', input.value)
+    const inputName = useRef()
+
+    const setLogin = () => {
+        const input:any = inputName.current
+        console.log('eee', input)
         const user : IUser = {
             id:1,
             name: input.value,
@@ -27,8 +29,13 @@ const Login:NextPage = () => {
         }
         saveUser(user)
         router.push('/')
-    
     }
+
+    useEffect(() => {
+        localStorage.setItem('id', JSON.stringify(user.id))
+        console.log('kkk', localStorage.getItem('id'))
+    },[saveUser])
+
 
     const ButtonBox = styled(Box)(({theme}) => ({
         marginLeft:'50px',
@@ -59,6 +66,8 @@ const Login:NextPage = () => {
                                     </Typography>
                                 </Stack>
                                 <Input 
+                                
+                                inputRef={inputName}
                                 sx={{fontSize:'24px'}}
                                 fullWidth={true}
                                 inputProps={ariaLabel}
@@ -67,6 +76,7 @@ const Login:NextPage = () => {
                                 />
                                 <FormControl>
                                     <Input 
+                                    type='password'
                                     sx={{fontSize:'24px'}}
                                     fullWidth={true}
                                     inputProps={ariaLabel}
@@ -77,7 +87,7 @@ const Login:NextPage = () => {
                                     </FormHelperText>
                                 </FormControl>
                                 <Stack alignItems='center'>
-                                <ButtonBox width='144px' height='43px' onClick={(e:any)=>setLogin(e)}>
+                                <ButtonBox width='144px' height='43px' onClick={()=>setLogin()}>
                                     <Typography
                                         variant="h6"
                                         fontSize='20px'

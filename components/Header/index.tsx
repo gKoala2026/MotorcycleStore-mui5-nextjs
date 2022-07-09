@@ -3,15 +3,14 @@ import { useRouter } from 'next/router'
 
 // import { styled, alpha } from '@mui/material/styles';
 import { AppBar, Box, Container, Menu, MenuItem, MenuProps, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
-import React, { cloneElement, useState } from 'react';
+import React, { cloneElement, useState, useEffect, FC } from 'react';
 
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import { useUserContext } from '../useUserContext'
-import { UserContextType, } from '../../context/userContext'
-
+// import { useUserContext } from '../useUserContext'
+import { UserContextType, useUserContext } from '../../context/userContext'
 
 
 const navItems = [ 
@@ -51,8 +50,23 @@ function ElevationScroll (props : Props) {
     }
 }
 
+// const login = JSON.parse(localStorage.getItem("id")||'')
 const Header:NextPage = () => {
-
+    
+// const [ login, setLogin ] =useState('')
+const [id, setId ] = useState('')
+useEffect(() => {
+    const saved:string = JSON.stringify(localStorage.getItem('id'))
+    console.log('sef', saved)
+    setId(JSON.parse(saved))
+    console.log('log', id)
+}, [])
+// useEffect(() => {
+    // }, [login])
+function removeUser() {
+    localStorage.setItem('id', '')
+    setId('')
+}
     // style
     const MenuBar = styled(Stack)(({theme}) => ({
         [theme.breakpoints.up('xs')]: {
@@ -92,7 +106,6 @@ const Header:NextPage = () => {
 
     
     const router = useRouter()
-    
     return (
         <ElevationScroll>
             <AppBar >
@@ -163,7 +176,7 @@ const Header:NextPage = () => {
                         }
                     )}
                     </MenuBar>
-                    { user.status == false &&
+                    { id != '1' &&
                         <ButtonBox width='144px' height='43px' onClick={() => router.push('/Login')}>
                             <Typography
                                 variant="h6"
@@ -173,7 +186,7 @@ const Header:NextPage = () => {
                             </Typography>
                         </ButtonBox> 
                         ||
-                        <Stack width='144px' height='43px' direction='row' alignItems='center' justifyContent="center" ml="50px" sx={{cursor:'pointer'}} onClick={() => cleanUser()}>
+                        <Stack width='144px' height='43px' direction='row' alignItems='center' justifyContent="center" ml="50px" sx={{cursor:'pointer'}} onClick={() => removeUser()}>
                             <img src='Ellipse2.png' />
                             <Typography fontSize='24px'>{user.name}</Typography>
                         </Stack>
