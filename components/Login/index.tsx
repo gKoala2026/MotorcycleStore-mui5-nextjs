@@ -49,7 +49,6 @@ const Login:NextPage = () => {
     }))
 
     return (
-        // <Box sx={{backgroundColor:'primary.main'}}>
         <Container sx={{ marginTop:'100px', position:'relative'}} maxWidth={'lg'}>
             <Box sx={{ background:"url('bg-login.png')", backgroundSize:"100% 100%", backgroundPosition:'left'}} width= {900} height= {650}>
                 <Box sx={{ background:"rgba(37, 44, 51, 0.25)", backgroundPosition:'left'}} width= {900} height= {650}> 
