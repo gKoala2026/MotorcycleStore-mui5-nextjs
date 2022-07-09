@@ -3,8 +3,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
 import { UserContextType, IUser, useUserContext } from '../../context/userContext'
-import React, { cloneElement, useState, useEffect, useRef } from 'react';
-import { NULL } from 'sass'
+import React, { useEffect, useRef } from 'react';
 
 
 const ariaLabel = { 'aria-label': 'description' };
@@ -14,7 +13,7 @@ const Login:NextPage = () => {
     const router = useRouter()
 
     // userContext
-    const {  user, saveUser, cleanUser } = useUserContext() as UserContextType
+    const {  user, saveUser } = useUserContext() as UserContextType
 
     const inputName = useRef()
 
