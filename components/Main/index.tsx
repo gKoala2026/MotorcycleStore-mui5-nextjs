@@ -1,6 +1,5 @@
-import { Paper, Stack, Typography, Link, styled } from '@mui/material'
+import { Stack, Typography, Link, styled } from '@mui/material'
 import { Box, Container } from '@mui/system'
-import { url } from 'inspector'
 import type { NextPage } from 'next'
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader

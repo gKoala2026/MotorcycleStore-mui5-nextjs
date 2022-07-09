@@ -1,15 +1,14 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-// import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Box, Container, Menu, MenuItem, MenuProps, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
-import React, { cloneElement, useState, useEffect, FC } from 'react';
+import { AppBar, Box, Container, Menu, MenuItem, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+import React, { cloneElement, useState, useEffect, } from 'react';
 
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-// import { useUserContext } from '../useUserContext'
+
 import { UserContextType, useUserContext } from '../../context/userContext'
 
 
@@ -50,10 +49,8 @@ function ElevationScroll (props : Props) {
     }
 }
 
-// const login = JSON.parse(localStorage.getItem("id")||'')
 const Header:NextPage = () => {
     
-// const [ login, setLogin ] =useState('')
 const [id, setId ] = useState('')
 useEffect(() => {
     const saved:string = JSON.stringify(localStorage.getItem('id'))
@@ -61,8 +58,7 @@ useEffect(() => {
     setId(JSON.parse(saved))
     console.log('log', id)
 }, [])
-// useEffect(() => {
-    // }, [login])
+
 function removeUser() {
     localStorage.setItem('id', '')
     setId('')
