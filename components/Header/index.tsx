@@ -188,8 +188,6 @@ function removeUser() {
                         </Stack>
                     }
                   {/* mobile menu */}
-
-  
                 </Toolbar>
                 </Container>
             </AppBar>
