@@ -1,12 +1,12 @@
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { logIn } from '../../services/auth.service'
+import { useRouter } from 'next/router'
 
 import { UserContextType, IUser, useUserContext } from '../../context/userContext'
 import React, { useState, useEffect, useRef } from 'react';
 import validator from 'validator';
 
-import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, IconButton, } from '@mui/material'
+import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, IconButton, FormGroup, FormControlLabel, Checkbox, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -29,16 +29,20 @@ const Login:NextPage = () => {
     // userContext
     const {  user, saveUser } = useUserContext() as UserContextType
 
+    const inputFullName = useRef()
     const inputEmail = useRef()
     const inputPassword = useRef()
+    const inputCPassword = useRef()
     const [values, setValues] = useState<State>({
         password: '',
         weight: '',
         weightRange: '',
         showPassword: false,
     });
+    const [isFName, setIsFName] = useState(true)
     const [isEmail, setIsEmail] = useState(true)
     const [isPwd, setIsPwd] = useState(true)
+    const [isCPwd, setIsCPwd] = useState(true)
     const [isErr, setIsErr] = useState('')
 
     interface ILogin {
@@ -112,15 +116,26 @@ const Login:NextPage = () => {
                 <Box sx={{ background:"rgba(37, 44, 51, 0.25)", backgroundPosition:'left'}} width= {900} height= {650}> 
                     <Stack sx={{backgroundColor:'white', borderRadius:"85px 0px 0px 85px"}} width={650} height={650} position='absolute' right='0px' alignItems='center' justifyContent='center' direction='row'>
                         <Container maxWidth='sm'>
-                            <Stack spacing={5}>
+                            <Stack spacing={3}>
                                 <Stack>
                                     <Typography fontSize={32}>
-                                        Login
+                                        Create an account
                                     </Typography>
                                     <Typography fontSize={18}>
-                                        New visitor? <Link href='#' color='text.primary'> Create your account</Link> here
+                                        Already have an account? <Link href='#' color='text.primary'> Login</Link> here
                                     </Typography>
                                 </Stack>
+                                <FormControl error={isFName ? false : true}>
+                                    <Input 
+                                    inputRef={inputFullName}
+                                    type='text'
+                                    sx={{fontSize:'24px'}}
+                                    fullWidth={true}
+                                    inputProps={ariaLabel}
+                                    placeholder='Full Name'
+                                    onChange={(e) => handleChange(e)}
+                                    />
+                                </FormControl>
                                 <FormControl error={isEmail ? false : true}>
                                     <Input 
                                     inputRef={inputEmail}
@@ -129,12 +144,8 @@ const Login:NextPage = () => {
                                     fullWidth={true}
                                     inputProps={ariaLabel}
                                     placeholder='Email'
-                                    id='email'
                                     onChange={(e) => handleChange(e)}
                                     />
-                                    {/* <FormHelperText id="component-error-text">
-                                        input email
-                                    </FormHelperText> */}
                                 </FormControl>
                                 <FormControl error={isPwd ? false : true}>
                                     <Input 
@@ -156,18 +167,39 @@ const Login:NextPage = () => {
                                         </InputAdornment>
                                     }
                                     />
-                                    <FormHelperText id="my-helper-text" sx={{textAlign:'right'}}>
-                                        Click <Link href='#' color='text.primary'> here </Link> in case you forget your password
-                                    </FormHelperText>
                                 </FormControl>
+                                <FormControl error={isCPwd ? false : true}>
+                                    <Input 
+                                    inputRef={inputCPassword}
+                                    type={values.showPassword ? 'text' : 'password'}
+                                    sx={{fontSize:'24px'}}
+                                    fullWidth={true}
+                                    inputProps={ariaLabel}
+                                    placeholder='Password'
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    />
+                                </FormControl>
+                                <FormGroup>
+                                    <FormControlLabel control={<Checkbox defaultChecked />} label="I agree to store’s Terms and Conditions" />
+                                </FormGroup>
                                 <Stack alignItems='center'>
                                     <Typography color='red' display={'block'}>{isErr}</Typography>
-                                    <ButtonBox width='144px' height='43px' onClick={()=>setLogin()}>
+                                    <ButtonBox width='285px' height='43px' onClick={()=>setLogin()}>
                                         <Typography
                                             variant="h6"
                                             fontSize='20px'
                                         >
-                                            <b>Login</b>
+                                            <b>Register Account</b>
                                         </Typography>
                                     </ButtonBox> 
                                 </Stack>
