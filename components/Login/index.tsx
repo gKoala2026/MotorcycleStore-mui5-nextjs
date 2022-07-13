@@ -1,33 +1,84 @@
-import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { logIn } from '../../services/auth.service'
 
 import { UserContextType, IUser, useUserContext } from '../../context/userContext'
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import validator from 'validator';
+
+import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, IconButton, } from '@mui/material'
+import InputAdornment from '@mui/material/InputAdornment';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+
 
 
 const ariaLabel = { 'aria-label': 'description' };
 
+interface State {
+    password: string;
+    weight: string;
+    weightRange: string;
+    showPassword: boolean;
+}
+
 const Login:NextPage = () => {
 
-    const router = useRouter()
+    // const router = useRouter()
 
     // userContext
     const {  user, saveUser } = useUserContext() as UserContextType
 
-    const inputName = useRef()
+    const inputEmail = useRef()
+    const inputPassword = useRef()
+    const [values, setValues] = useState<State>({
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
+    });
+    const [isEmail, setIsEmail] = useState(true)
+    const [isPwd, setIsPwd] = useState(true)
+    const [isErr, setIsErr] = useState('')
 
-    const setLogin = () => {
-        const input:any = inputName.current
-        console.log('eee', input)
-        const user : IUser = {
-            id:1,
-            name: input.value,
-            taken:'',
-            status:true
+    interface ILogin {
+        email:string;
+        password:string;
+    }
+    function setLogin() {
+        setIsErr('')
+        const userEmail:any = inputEmail.current
+        const userPassword:any = inputPassword.current
+        const data : ILogin = {
+            email: userEmail.value,
+            password: userPassword.value,
         }
-        saveUser(user)
-        router.push('/')
+        if (validator.isEmail(data.email)==false) {
+            
+            if (data.email=='') {
+                setIsErr('Please enter email address.')
+            }
+            else setIsErr('Please enter a valid email address.')
+        }
+        else if (data.password.length<6 || data.password.length>20) {
+            if (data.password.length==0) {
+                setIsErr('Please enter password.')
+            }
+            else setIsErr('The password must be between 6-20 characters long.')
+        }
+        else {
+            let success = logIn(data)
+            console.log('succ', success)
+            return
+        }
+        
+        return
+        // console.log('eee', input)
+        
+        // saveUser(user)
+        // router.push('/')
+        
+        
     }
 
     useEffect(() => {
@@ -48,6 +99,21 @@ const Login:NextPage = () => {
         cursor:'pointer',
     }))
 
+    const handleClickShowPassword = () => {
+        setValues({
+            ...values,
+            showPassword: !values.showPassword,
+        });
+    };
+    const handleChange = (event:any)  => {
+        setIsEmail(validator.isEmail(event.target.value))
+        console.log(isEmail)
+        if(event.target.value=='') setIsEmail(true)
+    };
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    
     return (
         <Container sx={{ marginTop:'100px', position:'relative'}} maxWidth={'lg'}>
             <Box sx={{ background:"url('bg-login.png')", backgroundSize:"100% 100%", backgroundPosition:'left'}} width= {900} height= {650}>
@@ -63,36 +129,55 @@ const Login:NextPage = () => {
                                         New visitor? <Link href='#' color='text.primary'> Create your account</Link> here
                                     </Typography>
                                 </Stack>
-                                <Input 
-                                
-                                inputRef={inputName}
-                                sx={{fontSize:'24px'}}
-                                fullWidth={true}
-                                inputProps={ariaLabel}
-                                placeholder='Email'
-                                id='email'
-                                />
-                                <FormControl>
+                                <FormControl error={isEmail ? false : true}>
                                     <Input 
-                                    type='password'
+                                    inputRef={inputEmail}
+                                    type='email'
+                                    sx={{fontSize:'24px'}}
+                                    fullWidth={true}
+                                    inputProps={ariaLabel}
+                                    placeholder='Email'
+                                    id='email'
+                                    onChange={(e) => handleChange(e)}
+                                    />
+                                    {/* <FormHelperText id="component-error-text">
+                                        input email
+                                    </FormHelperText> */}
+                                </FormControl>
+                                <FormControl error={isPwd ? false : true}>
+                                    <Input 
+                                    inputRef={inputPassword}
+                                    type={values.showPassword ? 'text' : 'password'}
                                     sx={{fontSize:'24px'}}
                                     fullWidth={true}
                                     inputProps={ariaLabel}
                                     placeholder='Password'
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
                                     />
                                     <FormHelperText id="my-helper-text" sx={{textAlign:'right'}}>
                                         Click <Link href='#' color='text.primary'> here </Link> in case you forget your password
                                     </FormHelperText>
                                 </FormControl>
                                 <Stack alignItems='center'>
-                                <ButtonBox width='144px' height='43px' onClick={()=>setLogin()}>
-                                    <Typography
-                                        variant="h6"
-                                        fontSize='20px'
-                                    >
-                                        <b>Login</b>
-                                    </Typography>
-                                </ButtonBox> 
+                                    <Typography color='red' display={'block'}>{isErr}</Typography>
+                                    <ButtonBox width='144px' height='43px' onClick={()=>setLogin()}>
+                                        <Typography
+                                            variant="h6"
+                                            fontSize='20px'
+                                        >
+                                            <b>Login</b>
+                                        </Typography>
+                                    </ButtonBox> 
                                 </Stack>
                             </Stack>
                         </Container>
