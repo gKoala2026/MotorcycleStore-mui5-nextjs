@@ -1,12 +1,13 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { logIn } from '../../services/auth.service'
+import Link from 'next/link'
 
 import { UserContextType, IUser, useUserContext } from '../../context/userContext'
 import React, { useState, useEffect, useRef } from 'react';
 import validator from 'validator';
 
-import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, IconButton, } from '@mui/material'
+import { Box, Container, Input, Stack, Typography, FormControl, FormHelperText, styled, IconButton, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -45,7 +46,7 @@ const Login:NextPage = () => {
         email:string;
         password:string;
     }
-    function setLogin() {
+    function login() {
         setIsErr('')
         const userEmail:any = inputEmail.current
         const userPassword:any = inputPassword.current
@@ -59,12 +60,14 @@ const Login:NextPage = () => {
                 setIsErr('Please enter email address.')
             }
             else setIsErr('Please enter a valid email address.')
+            setIsEmail(false)
         }
         else if (data.password.length<6 || data.password.length>20) {
             if (data.password.length==0) {
                 setIsErr('Please enter password.')
             }
             else setIsErr('The password must be between 6-20 characters long.')
+            setIsPwd(false)
         }
         else {
             let success = logIn(data)
@@ -78,7 +81,7 @@ const Login:NextPage = () => {
         localStorage.setItem('id', JSON.stringify(user.id))
         console.log('kkk', localStorage.getItem('id'))
     },[saveUser])
-    
+
     const ButtonBox = styled(Box)(({theme}) => ({
         marginLeft:'50px',
         borderRadius:'10px', 
@@ -118,7 +121,7 @@ const Login:NextPage = () => {
                                         Login
                                     </Typography>
                                     <Typography fontSize={18}>
-                                        New visitor? <Link href='#' color='text.primary'> Create your account</Link> here
+                                        New visitor? <Link href='/Register' color='text.primary'> Create your account</Link> here
                                     </Typography>
                                 </Stack>
                                 <FormControl error={isEmail ? false : true}>
@@ -132,9 +135,6 @@ const Login:NextPage = () => {
                                     id='email'
                                     onChange={(e) => handleChange(e)}
                                     />
-                                    {/* <FormHelperText id="component-error-text">
-                                        input email
-                                    </FormHelperText> */}
                                 </FormControl>
                                 <FormControl error={isPwd ? false : true}>
                                     <Input 
@@ -162,7 +162,7 @@ const Login:NextPage = () => {
                                 </FormControl>
                                 <Stack alignItems='center'>
                                     <Typography color='red' display={'block'}>{isErr}</Typography>
-                                    <ButtonBox width='144px' height='43px' onClick={()=>setLogin()}>
+                                    <ButtonBox width='144px' height='43px' onClick={()=>login()}>
                                         <Typography
                                             variant="h6"
                                             fontSize='20px'

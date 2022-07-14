@@ -1,12 +1,13 @@
 import { NextPage } from 'next'
 import { logIn } from '../../services/auth.service'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { UserContextType, IUser, useUserContext } from '../../context/userContext'
 import React, { useState, useEffect, useRef } from 'react';
 import validator from 'validator';
 
-import { Box, Container, Input, Stack, Typography, Link, FormControl, FormHelperText, styled, IconButton, FormGroup, FormControlLabel, Checkbox, } from '@mui/material'
+import { Box, Container, Input, Stack, Typography, FormControl, FormHelperText, styled, IconButton, FormGroup, FormControlLabel, Checkbox, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -49,7 +50,7 @@ const Login:NextPage = () => {
         email:string;
         password:string;
     }
-    function setLogin() {
+    function register() {
         setIsErr('')
         const userEmail:any = inputEmail.current
         const userPassword:any = inputPassword.current
@@ -122,7 +123,7 @@ const Login:NextPage = () => {
                                         Create an account
                                     </Typography>
                                     <Typography fontSize={18}>
-                                        Already have an account? <Link href='#' color='text.primary'> Login</Link> here
+                                        Already have an account? <Link href='/Login' color='text.primary'> Login</Link> here
                                     </Typography>
                                 </Stack>
                                 <FormControl error={isFName ? false : true}>
@@ -190,11 +191,11 @@ const Login:NextPage = () => {
                                     />
                                 </FormControl>
                                 <FormGroup>
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="I agree to store’s Terms and Conditions" />
+                                    <FormControlLabel control={<Checkbox />} label="I agree to store’s Terms and Conditions" />
                                 </FormGroup>
                                 <Stack alignItems='center'>
                                     <Typography color='red' display={'block'}>{isErr}</Typography>
-                                    <ButtonBox width='285px' height='43px' onClick={()=>setLogin()}>
+                                    <ButtonBox width='285px' height='43px' onClick={()=>register()}>
                                         <Typography
                                             variant="h6"
                                             fontSize='20px'

@@ -1,7 +1,7 @@
 
 import { createTheme } from '@mui/material/styles';
 
-import "@fontsource/Inter"
+import "@fontsource/inter"
 
 const theme = createTheme({
     palette: {
