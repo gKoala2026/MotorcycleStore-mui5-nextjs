@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { logIn } from '../../services/auth.service'
 import Link from 'next/link'
 
 import { UserContext } from '../../context/userContext'
