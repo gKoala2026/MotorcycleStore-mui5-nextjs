@@ -91,11 +91,6 @@ const Login:NextPage = () => {
         return
     }
 
-    // useEffect(() => {
-    //     localStorage.setItem('id', JSON.stringify(userContext.list.id))
-    //     console.log('kkk', localStorage.getItem('id'))
-    // },[userContext])
-
     const ButtonBox = styled(Box)(({theme}) => ({
         marginLeft:'50px',
         borderRadius:'10px', 

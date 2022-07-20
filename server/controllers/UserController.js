@@ -34,6 +34,17 @@ exports.getUser = (req, res, next) => {
 	res.send(users.find(user=>user.email==req.params.email));
 };
 
+exports.getUser12 = (req, res, next) => {
+	let user = users.find(user=>user.email==req.params.email)
+		if(user){
+			if(user.password == req.params.password)
+				res.send({ username:user.username, email:user.email })
+			else res.send('wrong password!')
+		}
+		else res.send('not exist!')
+	
+};
+
 exports.createOne = (req, res, next) => {
 	let newUser = {...req.body};
 	if ( newUser.id )
@@ -53,6 +64,3 @@ exports.delete = (req, res, next) => {
 	users = users.filter(user=>req.params.ids.split(',').findIndex(id=>id==user.id)==-1);
 	res.send(users);
 };
-
-
-

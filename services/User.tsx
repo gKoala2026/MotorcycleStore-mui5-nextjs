@@ -26,6 +26,13 @@ const getUser = (subscriber: any, email: string) => {
     })
 }
 
+const getUser12 = (subscriber: any, email: string, password: string) => {
+    instance.get('/' + {email, password})
+    .then((res)=>{
+        subscriber(res.data);
+    })
+}
+
 const create = (subscriber: any, user: any) => {
     instance.post('/', user)
     .then((res)=>{
