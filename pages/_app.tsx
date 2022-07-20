@@ -1,18 +1,37 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
+import * as React from 'react';
 import theme from '../styles/theme'
 import { ThemeProvider } from '@mui/material/styles';
-import UserProvider from '../context/userContext'
+import { UserContext, IUser, UserContextDefaultValues } from '../context/userContext';
+import UserApi from '../services/User';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const [users, setUsers] = React.useState<IUser>(UserContextDefaultValues.list);
+  const pushUsers = (newUser: IUser) => {
+      setUsers(newUser);
+  };
+  
+  const [email, setEmail ] = React.useState('')
+  React.useEffect(() => {
+    const saved:string = JSON.stringify(localStorage.getItem('email'))
+    console.log('sef', saved)
+    setEmail(saved)
+    console.log('log', email)
+    UserApi.getUser((res: any) => {
+      if(res) setUsers(res);
+      else setUsers(UserContextDefaultValues.list)
+    }, email)
+  }, []);
+
   return (
-    
-    <UserProvider>
+    <UserContext.Provider value={{list: users, push: pushUsers}}>
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </UserProvider>
+    </UserContext.Provider>
   )
 }
 

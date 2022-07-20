@@ -11,16 +11,16 @@ export const register = ({ username, email, password, role}) => {
 
 export const logIn = ({ email, password }) => {
   console.log('postdata',email, password)
-//  return httpService.post('login', {
-//     email, password
-//  })
-httpService.post('login', {
-  email, password
-}).then(res => {
-  console.log(res, '================')
-}).catch(err => {
-  console.log(err, '[[[[[[[[[[[[[[')
-})
+ return httpService.post('login', {
+    email, password
+ })
+// httpService.post('login', {
+//   email, password
+// }).then(res => {
+//   console.log(res, '================')
+// }).catch(err => {
+//   console.log(err, '[[[[[[[[[[[[[[')
+// })
 }
 
 export const getUser = () => {

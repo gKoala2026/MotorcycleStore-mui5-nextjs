@@ -1,68 +1,23 @@
-import * as React from 'react';
-import type { NextPage } from 'next'
-// import { TodoContextType, ITodo } from '../@types/todo';
-import {useContext} from 'react'
-import { isNumberObject } from 'util/types';
+import * as React from 'react'; 
 
 export interface IUser {
-    id: number;
-    name: string;
-    taken: string;
-    status: boolean;
-  }
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+}
 export type UserContextType = {
-    user: IUser;
-    saveUser: (user: IUser) => void;
-    cleanUser: () => void;
+  list: IUser,
+  push: (msg: IUser) => void
 };
 
-export const UserContext = React.createContext<UserContextType | null>(null);
-
-export const useUserContext = () => {
-  return useContext(UserContext)
+export const UserContextDefaultValues: UserContextType = {
+  list: {
+    id: 0,
+    username:'',
+    email:'',
+    password:''
+  },
+  push: (users: IUser) => {}
 }
-
-type UserProviderProps = {
-    children : React.ReactNode,
-}
-
-const UserProvider:NextPage<UserProviderProps> = ({ children }) => {
-    const [user, setUser] = React.useState<IUser>(
-        {
-        id: 1,
-        name: 'David',
-        taken: '',
-        status: false,
-        }
-    );
-    const saveUser = (user: IUser) => {
-        const newUser: IUser = {
-          id: user.id, // not really unique - but fine for this example
-          name: user.name,
-          taken: user.taken,
-          status: user.status,
-        }
-        setUser(newUser)
-    }
-      
-    const cleanUser = () => {
-      setUser(
-        {
-        id: 1,
-        name: '',
-        taken: '',
-        status: false,
-        }
-      )
-      // React.useEffect(() => {
-        localStorage.removeItem('id')
-      // }, [])
-    }
-    return (
-        <UserContext.Provider value={{ user, saveUser, cleanUser }}>
-          {children}
-        </UserContext.Provider>
-    );
-};
-    
-export default UserProvider;
+export const UserContext = React.createContext<UserContextType>(UserContextDefaultValues);

@@ -3,13 +3,15 @@ import { useRouter } from 'next/router'
 import { logIn } from '../../services/auth.service'
 import Link from 'next/link'
 
-import { UserContextType, IUser, useUserContext } from '../../context/userContext'
+import { UserContext } from '../../context/userContext'
 import React, { useState, useEffect, useRef } from 'react';
 import validator from 'validator';
 
 import { Box, Container, Input, Stack, Typography, FormControl, FormHelperText, styled, IconButton, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+import UserApi from '../../services/User';
 
 
 
@@ -25,10 +27,10 @@ interface State {
 
 const Login:NextPage = () => {
 
-    // const router = useRouter()
+    const router = useRouter()
 
     // userContext
-    const {  user, saveUser } = useUserContext() as UserContextType
+    const userContext = React.useContext(UserContext);
 
     const inputEmail = useRef()
     const inputPassword = useRef()
@@ -70,17 +72,29 @@ const Login:NextPage = () => {
             setIsPwd(false)
         }
         else {
-            let success = logIn(data)
-            console.log('succ', success)
+            UserApi.getUser(
+                (res:any)=>{
+                    console.log('234333333333', res)
+                    if(res){
+                        if(res.password==data.password){
+                            userContext.push(res)
+                            router.push('/');
+                        }
+                        else router.push('/Login');
+                    }
+                    else router.push('/Login');
+                }, data.email
+            )
+            // console.log('succ', rest)
             return
         }
         return
     }
 
-    useEffect(() => {
-        localStorage.setItem('id', JSON.stringify(user.id))
-        console.log('kkk', localStorage.getItem('id'))
-    },[saveUser])
+    // useEffect(() => {
+    //     localStorage.setItem('id', JSON.stringify(userContext.list.id))
+    //     console.log('kkk', localStorage.getItem('id'))
+    // },[userContext])
 
     const ButtonBox = styled(Box)(({theme}) => ({
         marginLeft:'50px',

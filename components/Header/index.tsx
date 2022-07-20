@@ -2,14 +2,14 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
 import { AppBar, Box, Container, Menu, MenuItem, Stack, styled, Toolbar, Typography, useScrollTrigger } from '@mui/material';
-import React, { cloneElement, useState, useEffect, } from 'react';
+import React, { cloneElement, useState, useEffect, useContext, } from 'react';
 
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
-import { UserContextType, useUserContext } from '../../context/userContext'
+import { UserContext } from '../../context/userContext'
 
 
 const navItems = [ 
@@ -50,19 +50,23 @@ function ElevationScroll (props : Props) {
 }
 
 const Header:NextPage = () => {
-    
-const [id, setId ] = useState('')
-useEffect(() => {
-    const saved:string = JSON.stringify(localStorage.getItem('id'))
-    console.log('sef', saved)
-    setId(JSON.parse(saved))
-    console.log('log', id)
-}, [])
 
-function removeUser() {
-    localStorage.setItem('id', '')
-    setId('')
-}
+    const router = useRouter()
+    const userContext = useContext(UserContext)
+    
+// const [id, setId ] = useState('')
+// useEffect(() => {
+//     const saved:string = JSON.stringify(localStorage.getItem('id'))
+//     console.log('sef', saved)
+//     setId(JSON.parse(saved))
+//     console.log('log', id)
+// }, [])
+
+    function removeUser() {
+        localStorage.setItem('email', '')
+        console.log('123123', JSON.stringify(localStorage.getItem('email')))
+        router.push('/');
+    }
     // style
     const MenuBar = styled(Stack)(({theme}) => ({
         [theme.breakpoints.up('xs')]: {
@@ -97,11 +101,7 @@ function removeUser() {
         align:'left',
         cursor:'pointer',
     }))
-    // userContext
-    const {  user, saveUser, cleanUser } = useUserContext() as UserContextType
 
-    
-    const router = useRouter()
     return (
         <ElevationScroll>
             <AppBar >
@@ -172,7 +172,7 @@ function removeUser() {
                         }
                     )}
                     </MenuBar>
-                    { id != '1' &&
+                    { userContext.list.email == '' &&
                         <ButtonBox width='144px' height='43px' onClick={() => router.push('/Login')}>
                             <Typography
                                 variant="h6"
@@ -184,7 +184,7 @@ function removeUser() {
                         ||
                         <Stack width='144px' height='43px' direction='row' alignItems='center' justifyContent="center" ml="50px" sx={{cursor:'pointer'}} onClick={() => removeUser()}>
                             <img src='Ellipse2.png' />
-                            <Typography fontSize='24px'>{user.name}</Typography>
+                            <Typography fontSize='24px'>{userContext.list.username}</Typography>
                         </Stack>
                     }
                   {/* mobile menu */}
