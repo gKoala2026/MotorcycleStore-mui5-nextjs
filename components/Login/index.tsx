@@ -71,18 +71,25 @@ const Login:NextPage = () => {
             setIsPwd(false)
         }
         else {
-            UserApi.getUser(
+            UserApi.login(
                 (res:any)=>{
                     console.log('234333333333', res)
-                    if(res){
-                        if(res.password==data.password){
+                    if(res.username){
+                            localStorage.setItem('email', res.email)
                             userContext.push(res)
                             router.push('/');
-                        }
-                        else router.push('/Login');
                     }
-                    else router.push('/Login');
-                }, data.email
+                    else {
+                        if(res=='wrong password!'){
+                            console.log('--------', res)
+                            router.push('/Login');
+                        }
+                        if(res=='not exist!'){
+                            console.log('--------', res)
+                            router.push('/Login');
+                        }
+                    }
+                }, data.email, data.password
             )
             // console.log('succ', rest)
             return

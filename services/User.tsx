@@ -20,14 +20,15 @@ const getOne = (subscriber: any, id: number) => {
 }
 
 const getUser = (subscriber: any, email: string) => {
+    console.log('lkjhgds', email)
     instance.get('/' + email)
     .then((res)=>{
         subscriber(res.data);
     })
 }
 
-const getUser12 = (subscriber: any, email: string, password: string) => {
-    instance.get('/' + {email, password})
+const login = (subscriber: any, email: string, password: string) => {
+    instance.post('/login', {email, password})
     .then((res)=>{
         subscriber(res.data);
     })
@@ -48,7 +49,7 @@ const remove = (subscriber: any, ids: Array<number>) => {
 }
 
 const UserApi = {
-    instance, getList, getOne, getUser, remove, create
+    instance, getList, getOne, getUser, login, remove, create
 }
 
 export default UserApi;

@@ -64,7 +64,8 @@ const Header:NextPage = () => {
 
     function removeUser() {
         localStorage.setItem('email', '')
-        console.log('123123', JSON.stringify(localStorage.getItem('email')))
+        // console.log('123123', JSON.stringify(localStorage.getItem('email')))
+        userContext.push({email:'', username:''})
         router.push('/');
     }
     // style
@@ -172,7 +173,7 @@ const Header:NextPage = () => {
                         }
                     )}
                     </MenuBar>
-                    { userContext.list.email == '' &&
+                    { !userContext.list.email &&
                         <ButtonBox width='144px' height='43px' onClick={() => router.push('/Login')}>
                             <Typography
                                 variant="h6"

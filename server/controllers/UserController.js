@@ -19,7 +19,7 @@ var users = [
 		id: Date.now()+1,
 		username: 'David',
 		email: 'fli.dreamDev@gmail.com',
-		password: 'express street',
+		password: '123123',
 	}
 ]
 exports.getList = (req, res, next) => {
@@ -31,13 +31,18 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-	res.send(users.find(user=>user.email==req.params.email));
+	console.log('===323=====', req.params)
+	let user = users.find(user=>user.email==req.params.email)
+	if(user){
+			res.send({ username:user.username, email:user.email })
+	}
 };
 
-exports.getUser12 = (req, res, next) => {
-	let user = users.find(user=>user.email==req.params.email)
+exports.login = (req, res, next) => {
+	console.log('==========', req.body)
+	let user = users.find(user=>user.email==req.body.email)
 		if(user){
-			if(user.password == req.params.password)
+			if(user.password == req.body.password)
 				res.send({ username:user.username, email:user.email })
 			else res.send('wrong password!')
 		}

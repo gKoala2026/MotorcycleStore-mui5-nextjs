@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     setEmail(saved)
     console.log('log', email)
     UserApi.getUser((res: any) => {
+      console.log('log123123', res)
       if(res) setUsers(res);
       else setUsers(UserContextDefaultValues.list)
     }, email)
