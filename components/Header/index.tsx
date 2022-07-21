@@ -54,17 +54,8 @@ const Header:NextPage = () => {
     const router = useRouter()
     const userContext = useContext(UserContext)
     
-// const [id, setId ] = useState('')
-// useEffect(() => {
-//     const saved:string = JSON.stringify(localStorage.getItem('id'))
-//     console.log('sef', saved)
-//     setId(JSON.parse(saved))
-//     console.log('log', id)
-// }, [])
-
     function removeUser() {
         localStorage.setItem('email', '')
-        // console.log('123123', JSON.stringify(localStorage.getItem('email')))
         userContext.push({email:'', username:''})
         router.push('/');
     }

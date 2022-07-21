@@ -73,7 +73,6 @@ const Login:NextPage = () => {
         else {
             UserApi.login(
                 (res:any)=>{
-                    console.log('234333333333', res)
                     if(res.username){
                             localStorage.setItem('email', res.email)
                             userContext.push(res)
@@ -81,17 +80,14 @@ const Login:NextPage = () => {
                     }
                     else {
                         if(res=='wrong password!'){
-                            console.log('--------', res)
                             router.push('/Login');
                         }
                         if(res=='not exist!'){
-                            console.log('--------', res)
                             router.push('/Login');
                         }
                     }
                 }, data.email, data.password
             )
-            // console.log('succ', rest)
             return
         }
         return

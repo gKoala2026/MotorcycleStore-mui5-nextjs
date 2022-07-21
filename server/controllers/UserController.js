@@ -31,7 +31,6 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-	console.log('===323=====', req.params)
 	let user = users.find(user=>user.email==req.params.email)
 	if(user){
 			res.send({ username:user.username, email:user.email })
@@ -39,7 +38,6 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-	console.log('==========', req.body)
 	let user = users.find(user=>user.email==req.body.email)
 		if(user){
 			if(user.password == req.body.password)
