@@ -53,7 +53,7 @@ const Header:NextPage = () => {
 
     const router = useRouter()
     const userContext = useContext(UserContext)
-    
+
     function removeUser() {
         localStorage.setItem('email', '')
         userContext.push({email:'', username:''})
@@ -123,14 +123,12 @@ const Header:NextPage = () => {
                             <PopupState variant="popover" popupId="demo-popup-menu" key={index}>
                                 {(popupState) => (
                                 <>
-                                    {/* <Box {...bindTrigger(popupState)} > */}
-                                        <Stack {...bindTrigger(popupState)} direction='row' alignItems='center'>
-                                            <Typography fontSize='20px' lineHeight='24.2px'>
-                                            {item[0]}
-                                            </Typography>
-                                            <KeyboardArrowDownIcon fontSize='large'/>
-                                        </Stack>
-                                    {/* </Box> */}
+                                    <Stack {...bindTrigger(popupState)} direction='row' alignItems='center'>
+                                        <Typography fontSize='20px' lineHeight='24.2px'>
+                                        {item[0]}
+                                        </Typography>
+                                        <KeyboardArrowDownIcon fontSize='large'/>
+                                    </Stack>
                                     <Menu {...bindMenu(popupState)}
                                     anchorOrigin={{
                                     vertical: 'bottom',

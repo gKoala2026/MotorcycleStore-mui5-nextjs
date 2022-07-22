@@ -1,13 +1,12 @@
 import { NextPage } from 'next'
-import { logIn } from '../../services/auth.service'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import { UserContextType, IUser, useUserContext } from '../../context/userContext'
-import React, { useState, useEffect, useRef } from 'react';
+import { UserContext, IUser } from '../../context/userContext'
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import validator from 'validator';
 
-import { Box, Container, Input, Stack, Typography, FormControl, FormHelperText, styled, IconButton, FormGroup, FormControlLabel, Checkbox, } from '@mui/material'
+import { Box, Container, Input, Stack, Typography, FormControl, styled, IconButton, FormGroup, FormControlLabel, Checkbox, } from '@mui/material'
 import InputAdornment from '@mui/material/InputAdornment';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -25,10 +24,10 @@ interface State {
 
 const Login:NextPage = () => {
 
-    // const router = useRouter()
+    const router = useRouter()
 
     // userContext
-    const {  user, saveUser } = useUserContext() as UserContextType
+    const userContext = useContext(UserContext)
 
     const inputFullName = useRef()
     const inputEmail = useRef()

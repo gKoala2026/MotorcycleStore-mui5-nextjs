@@ -20,7 +20,6 @@ const getOne = (subscriber: any, id: number) => {
 }
 
 const getUser = (subscriber: any, email: string) => {
-    console.log('lkjhgds', email)
     instance.get('/' + email)
     .then((res)=>{
         subscriber(res.data);

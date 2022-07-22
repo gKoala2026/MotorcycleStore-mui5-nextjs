@@ -17,11 +17,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [email, setEmail ] = React.useState('')
   React.useEffect(() => {
     const saved:string = JSON.stringify(localStorage.getItem('email'))
-    console.log('sef', saved)
     setEmail(saved)
-    console.log('log', email)
     UserApi.getUser((res: any) => {
-      console.log('log123123', res)
       if(res) setUsers(res);
       else setUsers(UserContextDefaultValues.list)
     }, email)

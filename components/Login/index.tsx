@@ -113,7 +113,6 @@ const Login:NextPage = () => {
     };
     const handleChange = (event:any)  => {
         setIsEmail(validator.isEmail(event.target.value))
-        console.log(isEmail)
         if(event.target.value=='') setIsEmail(true)
     };
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
