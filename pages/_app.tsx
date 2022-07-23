@@ -14,14 +14,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       setUsers(newUser);
   };
   
-  const [email, setEmail ] = React.useState('')
+  const [token, setToken ] = React.useState('')
   React.useEffect(() => {
-    const saved:string = JSON.stringify(localStorage.getItem('email'))
-    setEmail(saved)
+    const saved:string = JSON.stringify(localStorage.getItem('token'))
+    setToken(saved)
     UserApi.getUser((res: any) => {
       if(res) setUsers(res);
       else setUsers(UserContextDefaultValues.list)
-    }, email)
+    }, token)
   }, []);
 
   return (

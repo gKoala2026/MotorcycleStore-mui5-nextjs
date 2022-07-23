@@ -55,6 +55,7 @@ const Header:NextPage = () => {
     const userContext = useContext(UserContext)
 
     function removeUser() {
+        localStorage.setItem('token', '')
         localStorage.setItem('email', '')
         userContext.push({email:'', username:''})
         router.push('/');

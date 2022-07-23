@@ -19,8 +19,8 @@ const getOne = (subscriber: any, id: number) => {
     })
 }
 
-const getUser = (subscriber: any, email: string) => {
-    instance.get('/' + email)
+const getUser = (subscriber: any, token: string) => {
+    instance.get('/' + token)
     .then((res)=>{
         subscriber(res.data);
     })
@@ -34,7 +34,7 @@ const login = (subscriber: any, email: string, password: string) => {
 }
 
 const create = (subscriber: any, user: any) => {
-    instance.post('/', user)
+    instance.post('/register', user)
     .then((res)=>{
         subscriber(res.data);
     })

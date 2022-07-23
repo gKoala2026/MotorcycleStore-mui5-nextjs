@@ -1,4 +1,6 @@
 const env = require('dotenv');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/User');
 
 var users = [
 	{
@@ -31,21 +33,51 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-	let user = users.find(user=>user.email==req.params.email)
+	let user = users.find(user=>user.token==req.params.token)
 	if(user){
 			res.send({ username:user.username, email:user.email })
 	}
 };
 
-exports.login = (req, res, next) => {
-	let user = users.find(user=>user.email==req.body.email)
-		if(user){
-			if(user.password == req.body.password)
-				res.send({ username:user.username, email:user.email })
-			else res.send('wrong password!')
-		}
-		else res.send('not exist!')
+exports.login = async(req, res, next) => {
+	const { email, password } = req.body
+	if( !email || !password) return res.status(400).send('All input is required!')
+
+	const user = await UserModel.findOne({ email });
+	if ( !user ) {
+		return res.status(409).send('User not found');
+	}
 	
+	const validate = await user.isValidPassword(password);
+	if (!validate) {
+		return res.status(409).send('Wrong Password');
+	}
+	
+	const body = { _id: user._id, email: user.email };
+	const token = jwt.sign({ user: body }, process.env.TOKEN_KEY);
+
+	user.password = '';
+	return res.json({ user, token });
+};
+
+exports.register = async(req, res, next) => {
+	const { name, email, password } = req.body
+	if( !name || !email || !password) return res.status(400).send('All input is required!')
+	
+	const oldUser = await UserModel.findOne({ email });
+	if (oldUser) {
+		return res.status(409).send("User Already Exist. Please Login");
+	}
+	const user = await UserModel.create({
+		name,
+		email,
+		password,
+	});
+
+	user._id = null;
+	user.password = '';
+	res.json(user);
+
 };
 
 exports.createOne = (req, res, next) => {

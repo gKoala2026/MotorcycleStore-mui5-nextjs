@@ -73,16 +73,17 @@ const Login:NextPage = () => {
         else {
             UserApi.login(
                 (res:any)=>{
-                    if(res.username){
-                            localStorage.setItem('email', res.email)
-                            userContext.push(res)
+                    console.log('000000000', res)
+                    if(res.token){
+                            localStorage.setItem('token', res.token)
+                            userContext.push({username:res.user.name, email:res.user.email})
                             router.push('/');
                     }
                     else {
                         if(res=='wrong password!'){
                             router.push('/Login');
                         }
-                        if(res=='not exist!'){
+                        if(res=='User not found'){
                             router.push('/Login');
                         }
                     }

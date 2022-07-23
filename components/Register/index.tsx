@@ -1,17 +1,11 @@
 import { NextPage } from 'next';
+import { useRouter } from 'next/router'
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { IconButton, Input, InputAdornment, Stack, styled } from '@mui/material';
+
+import { Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, IconButton, Input, InputAdornment, Link, Stack, styled, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { stringifyQuery } from 'next/dist/server/server-route-utils';
+
+import UserApi from '../../services/User';
 
 function Copyright(props: any) {
     return (
@@ -30,23 +24,34 @@ const ariaLabel = { 'aria-label': 'description' };
 
 const Register:NextPage = () => {
 
+    const router = useRouter()
+
     const [isErr, setIsErr] = React.useState(String)
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         setIsErr('')
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const userData = {
+            name: data.get('name'),
             email: data.get('email'),
             password: data.get('password'),
-            rpassword: data.get('rpassword'),
-            name: data.get('name'),
         }
         console.log(userData);
-        if (userData.password!=userData.rpassword) {
+        if (userData.password!=data.get('rpassword')) {
             setIsErr('rpassword')
             return;
         }
         
+        UserApi.create(
+            (res:any)=>{
+                if(res=='success'){
+                        router.push('/Login');
+                }
+                else {
+                        router.push('/');
+                }
+            }, userData
+        )
         console.log('userData');
     };
     const [showPWD, setShowPWD] = React.useState(false);
@@ -56,18 +61,6 @@ const Register:NextPage = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-
-    const ButtonBox = styled(Box)(({theme}) => ({
-        marginLeft:'50px',
-        borderRadius:'10px', 
-        backgroundColor:theme.palette.background.paper, 
-        color:theme.palette.primary.main,  
-        justifyContent:'center', 
-        display:'flex', 
-        alignItems:'center',
-        align:'left',
-        cursor:'pointer',
-    }))
   
 
     return (
